@@ -1,6 +1,6 @@
 import random
 
-word_list = ['cisco','huawei']
+word_list = ['cisco','huawei','zte','nokia']
 
 print("Hey, friend! \nDo you want to play the game 'Find the word'?")
 entrance = input("Please enter 'yes' or 'no': ")
