@@ -14,6 +14,7 @@ WAYS_WIN = (
 x = 'X'
 o = 'O'
 empty = '_'
+error_ = "\nНеверный ход. Ход передается следующему игроку."
 
 # Создать поле
 
@@ -37,9 +38,10 @@ def players():
     player1 = input('Вы первый игрок. Введите ваше имя: ')
     player2 = input('Вы второй игрок. Введите ваше имя: ')
     print('Первый игрок - {}. Второй игрок - {}. Начинает {} с {}.'.format(player1,player2, player1, x))
-    return player1, player2
+    key = {player1:x, player2:o}
+    return player1, player2, key
 
-# Зкончена ли игра
+# Закончена ли игра
 def is_finished(field, player1, player2):
     for lists in WAYS_WIN:
         check_list_x = []
@@ -48,30 +50,20 @@ def is_finished(field, player1, player2):
             if field[indexes] == x:
                 check_list_x.append(indexes)
                 if len(check_list_x) == 3:
-                    print('Выиграл первый игрок - {}.'.format(player1))
+                    print('Выиграл {}.'.format(player1))
                     return True
             elif field[indexes] == o:
                 check_list_o.append(indexes)
                 if len(check_list_o) == 3:
-                    print('Выиграл втооой игрок - {}.'.format(player2))
+                    print('Выиграл {}.'.format(player2))
                     return True
 
 
 # Сделать шаг 
-def move1(field):
-    a = int(input('Игрок 1. Прошу ввести номер поля, для ввода X:'))
+def move(field, player, key):
+    a = int(input('{}. Прошу ввести номер поля, для ввода {}:'.format(player, key[player])))
     if field[a] == empty:
-        field[a] = x
-    elif a == str:
-        raise ValueError
-    else:        
-        raise IndexError()
-
-    
-def move2(field):
-    a = int(input('Игрок 2. Прошу ввести номер поля, для ввода O:'))
-    if field[a] == empty:
-        field[a] = o
+        field[a] = key[player]
     elif a == str:
         raise ValueError
     else:        
@@ -79,40 +71,31 @@ def move2(field):
 
 def main():
     field = create_f()
+    player1, player2, key = players()
     release_field(field)
-    player1, player2 = players()
-
     while True:
         try:
-            move1(field)
+            move(field, player1, key)
             release_field(field)
             if is_finished(field, player1, player2) == True:
                 break
             if empty not in field:
                 print('Ничья!')
                 break
-        except IndexError:
-            print("Неверный ход. Ход передается следующему игроку")
+        except:
+            print(error_)
             release_field(field)
-        except ValueError:
-            print("Неверный ход. Ход передается следующему игроку")
-            release_field(field)          
-        try:
-            move2(field)
+        try: 
+            move(field, player2, key)
             release_field(field)
             if is_finished(field, player1, player2) == True:
                 break
             if empty not in field:
                 print('Ничья!')
                 break
-        except IndexError:
-            print("Неверный ход. Ход передается следуюему игроку")
+        except:
+            print(error_)
             release_field(field)
-        except ValueError:
-            print("Неверный ход. Ход передается следующему игроку")
-            release_field(field)   
-
-
 
 if __name__ == '__main__':
     main()
